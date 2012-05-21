@@ -22,12 +22,7 @@ class UserLocation
     private $id;
 
     /**
-     * @var integer $user
-     *
-     * @ORM\Column(name="user_id", type="integer")
-     *
      * @ORM\ManyToOne(targetEntity="Scavenger\WebserviceBundle\Entity\User", inversedBy="locations")
-     * @ORM\JoinColumn(name="id", referencedColumnName="user_id")
      */
     private $user;
 
@@ -49,7 +44,7 @@ class UserLocation
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -69,7 +64,7 @@ class UserLocation
     /**
      * Get user_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getUser()
     {
@@ -89,7 +84,7 @@ class UserLocation
     /**
      * Get lat
      *
-     * @return float 
+     * @return float
      */
     public function getLat()
     {
@@ -109,7 +104,7 @@ class UserLocation
     /**
      * Get lng
      *
-     * @return float 
+     * @return float
      */
     public function getLng()
     {

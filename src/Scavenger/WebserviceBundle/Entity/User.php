@@ -4,6 +4,7 @@ namespace Scavenger\WebserviceBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use \Doctrine\ORM\Mapping\OneToMany;
+use \Doctrine\ORM\Mapping\ManyToMany;
 use \Doctrine\ORM\Mapping\JoinTable;
 use \Doctrine\ORM\Mapping\JoinColumn;
 
@@ -44,11 +45,19 @@ class User
      */
     private $locations;
 
+    /**
+     * @ManyToMany(targetEntity="Scavenger\WebserviceBundle\Entity\Session", inversedBy="users")
+     * @JoinTable(name="Session_has_User",
+     *      joinColumns={@JoinColumn(name="session_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@JoinColumn(name="user_id", referencedColumnName="id")}
+     * )
+     */
+    private $sessions;
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -68,7 +77,7 @@ class User
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -88,7 +97,7 @@ class User
     /**
      * Get device_id
      *
-     * @return string 
+     * @return string
      */
     public function getDeviceId()
     {
@@ -101,5 +110,13 @@ class User
     public function getLocations()
     {
         return $this->locations;
+    }
+
+    /**
+     * @return \Scavenger\WebserviceBundle\Entity\Session[]
+     */
+    public function getSessions()
+    {
+        return $this->sessions;
     }
 }

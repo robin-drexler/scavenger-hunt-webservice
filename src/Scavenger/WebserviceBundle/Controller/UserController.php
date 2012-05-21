@@ -14,7 +14,7 @@ use \Symfony\Component\HttpKernel\Exception\HttpException;
 /**
  * @Route("/user")
  */
-class DefaultController extends Controller
+class UserController extends Controller
 {
     /**
      * @Route("/")
@@ -44,7 +44,6 @@ class DefaultController extends Controller
      * @Route("/{id}/")
      * @Method({"POST"})
      *
-     * curl -v -d "name=wohooo&deviceId=xxxDDD" http://localhost/scavenger-bk/scavenger-hunt-webservice/web/app_dev.php/user/1/
      */
     public function userEditAction($id)
     {
@@ -61,11 +60,113 @@ class DefaultController extends Controller
         $response = new Response();
         $response->setStatusCode(200);
 
-        $response->setContent(json_encode(array('foo' => 'var')));
-        $response->headers->set('Content-Type', 'application/json');
         return $response;
+    }
+
+    /**
+     * @Route("/position/")
+     * @Method({"GET"})
+     */
+    public function usePositionGet()
+    {
+        $criteria = array();
+        $request = $this->getRequest();
+        $em = $this->getEntityManager();
+        $qb = $em->createQueryBuilder();
+
+        $qb->addSelect('u')
+                ->from('Scavenger\WebserviceBundle\Entity\User', 'u');
+
+
+        if ($sessionId = $request->get('session')) {
+            $qb->join('u.sessions', 's')->andWhere('s.id = :sessionId')->setParameter('sessionId', $sessionId);
+        }
+
+        $users = $qb->getQuery()->getResult();
+        $res = array();
+
+        foreach($users as $u) {
+            $pos = array();
+            $loc = $u->getLocations();
+
+            $loc = $loc->last();
+
+            if (false !== $loc) {
+                $pos = array(
+                    'lat' => $loc->getLat(),
+                    'lng' => $loc->getLng()
+                );
+            }
+
+            echo '<pre>';
+            //var_dump($loc);
+
+            $res = array(
+                'id' => $u->getId(),
+                'position' => $pos
+            );
+        }
+
+        var_dump($res);
+        die();
 
     }
+
+    /**
+     * @Route("/{id}/")
+     * @Method({"GET"})
+     */
+    public function userGetById($id)
+    {
+        $repository = $this->getUserRepository();
+        $user = $repository->findOneById($id);
+        echo $user;
+        die();
+
+
+        return $this->handleGetResponse(new Response(), $user);
+    }
+
+    /**
+     * @Route("/")
+     * @Method({"GET"})
+     */
+    public function userGet()
+    {
+
+        $request = $this->getRequest();
+        $repository = $this->getUserRepository();
+        $em = $this->getEntityManager();
+        $qb = $em->createQueryBuilder();
+
+        $qb->addSelect('u')
+                ->from('Scavenger\WebserviceBundle\Entity\User', 'u');
+
+
+        if ($sessionId = $request->get('session')) {
+            $qb->join('u.sessions', 's')->andWhere('s.id = :sessionId')->setParameter('sessionId', $sessionId);
+        }
+
+        if ($deviceId = $request->get('deviceId')) {
+            $qb->andWhere('deviceId = :deviceId')->setParameter('deviceId', $deviceId);
+        }
+
+
+        $users = array();
+
+        var_dump($qb->getQuery()->getArrayResult());
+        die();
+
+        foreach ($qb->getQuery()->getResult() as $u) {
+            var_dump($u);
+            //$pos = $u->getLocations();
+            //echo $pos;
+        }
+        die();
+
+        return $this->handleGetResponse(new Response(), $qb->getQuery()->getArrayResult());
+    }
+
 
     private function saveUserData(User $user, $request)
     {
@@ -89,6 +190,9 @@ class DefaultController extends Controller
         return $this->container->get('sh.repository.user');
     }
 
+    /**
+     * @return \Doctrine\ORM\EntityManager
+     */
     private function getEntityManager()
     {
         return $this->get("doctrine.orm.entity_manager");
@@ -99,5 +203,18 @@ class DefaultController extends Controller
         if (null == $user) {
             throw new HttpException(404, 'User not found');
         }
+    }
+
+    private function handleGetResponse($response, $user)
+    {
+        $this->assertUserExists($user);
+
+        $response->setStatusCode(200);
+
+        $response->setContent(json_encode($user));
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
+
     }
 }
