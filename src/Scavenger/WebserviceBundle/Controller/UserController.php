@@ -43,6 +43,8 @@ class DefaultController extends Controller
     /**
      * @Route("/{id}/")
      * @Method({"POST"})
+     *
+     * curl -v -d "name=wohooo&deviceId=xxxDDD" http://localhost/scavenger-bk/scavenger-hunt-webservice/web/app_dev.php/user/1/
      */
     public function userEditAction($id)
     {
