@@ -29,6 +29,25 @@ class SessionController extends Controller
     }
 
     /**
+     * @Route("/{id}/")
+     * @Method({"DELETE"})
+     */
+    public function deleteAction($id)
+    {
+        $repository = $this->getSessionRepository();
+        $session = $repository->findOneBy(array('id' => $id));
+
+        $responseHandler = $this->getResponseHandler();
+        $responseHandler->throwNotFound($session);
+
+        $em = $this->getEntityManager();
+        $em->remove($session);
+        $em->flush();
+
+        return new Response('', 200);
+    }
+
+    /**
      * curl -v -d "" http://localhost/scavenger-bk/scavenger-hunt-webservice/web/app_dev.php/session/100/user/2/
      * @Route("/{sessionId}/user/{userId}/")
      * @Method({"POST"})

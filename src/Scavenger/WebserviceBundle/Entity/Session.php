@@ -40,11 +40,7 @@ class Session
 
 
     /**
-     * @ManyToMany(targetEntity="Scavenger\WebserviceBundle\Entity\User", mappedBy="sessions")
-     * @JoinTable(name="Session_has_User",
-     *      joinColumns={@JoinColumn(name="user_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@JoinColumn(name="session_id", referencedColumnName="id")}
-     * )
+     * @ManyToMany(targetEntity="Scavenger\WebserviceBundle\Entity\User", mappedBy="sessions", cascade={"all"})
      */
     private $users;
 

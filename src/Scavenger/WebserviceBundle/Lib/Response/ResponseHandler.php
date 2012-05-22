@@ -40,7 +40,7 @@ class ResponseHandler {
      * @param $value
      * @return void
      */
-    private function throwNotFound($value)
+    public function throwNotFound($value)
     {
         if (null == $value) {
             throw new HttpException(404, 'Not found');
