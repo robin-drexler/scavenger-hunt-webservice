@@ -101,6 +101,19 @@ class SessionController extends Controller
     }
 
     /**
+     * @Route("/")
+     * @Method({"GET"})
+     */
+    public function getSessionsAction()
+    {
+        $repository = $this->getSessionRepository();
+        $sessions = $repository->findAll();
+        $responseHandler = $this->getResponseHandler();
+
+        return $responseHandler->handleResponse($this->getSessionsAsArray($sessions));
+    }
+
+    /**
      * @return \Scavenger\WebserviceBundle\Entity\SessionRepository
      */
     private function getSessionRepository()
@@ -144,6 +157,16 @@ class SessionController extends Controller
             'name' => $session->getName(),
             'mrX' => $session->getMrX(),
         );
+    }
+
+    private function getSessionsAsArray(array $sessions)
+    {
+        $res = array();
+        foreach ($sessions as $s) {
+            $res[] = $this->getSessionAsArray($s);
+        }
+
+        return $res;
     }
 
     /**
