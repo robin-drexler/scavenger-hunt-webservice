@@ -35,9 +35,7 @@ class UserController extends Controller
         $em->persist($user);
         $em->flush();
 
-        $response = new Response();
-        $response->setStatusCode(200);
-        return $response;
+        return $this->handleGetResponse(new Response(), $this->getUserAsArray($user));
     }
 
     /**
@@ -53,14 +51,9 @@ class UserController extends Controller
         $request = $this->getRequest();
         $user = $this->getUserRepository()->findOneById($id);
 
-        $this->assertUserExists($user);
-
         $this->saveUserData($user, $this->getRequest());
 
-        $response = new Response();
-        $response->setStatusCode(200);
-
-        return $response;
+        $this->handleGetResponse(new Response(), $this->getUserAsArray($user));
     }
 
     /**
@@ -69,7 +62,6 @@ class UserController extends Controller
      */
     public function usePositionGet()
     {
-        $criteria = array();
         $request = $this->getRequest();
         $em = $this->getEntityManager();
         $qb = $em->createQueryBuilder();
@@ -85,7 +77,7 @@ class UserController extends Controller
         $users = $qb->getQuery()->getResult();
         $res = array();
 
-        foreach($users as $u) {
+        foreach ($users as $u) {
             $pos = array();
             $loc = $u->getLocations();
 
@@ -98,17 +90,15 @@ class UserController extends Controller
                 );
             }
 
-            echo '<pre>';
-            //var_dump($loc);
-
-            $res = array(
-                'id' => $u->getId(),
-                'position' => $pos
+            $res[] = array_merge(
+                $this->getUserAsArray($u),
+                array(
+                     'position' => $pos
+                )
             );
         }
 
-        var_dump($res);
-        die();
+        return $this->handleGetResponse(new Response(), $res);
 
     }
 
@@ -120,11 +110,8 @@ class UserController extends Controller
     {
         $repository = $this->getUserRepository();
         $user = $repository->findOneById($id);
-        echo $user;
-        die();
 
-
-        return $this->handleGetResponse(new Response(), $user);
+        return $this->handleGetResponse(new Response(), $this->getUserAsArray($user));
     }
 
     /**
@@ -154,24 +141,12 @@ class UserController extends Controller
 
         $users = array();
 
-        var_dump($qb->getQuery()->getArrayResult());
-        die();
-
-        foreach ($qb->getQuery()->getResult() as $u) {
-            var_dump($u);
-            //$pos = $u->getLocations();
-            //echo $pos;
-        }
-        die();
-
         return $this->handleGetResponse(new Response(), $qb->getQuery()->getArrayResult());
     }
 
 
     private function saveUserData(User $user, $request)
     {
-        $repository = $this->getUserRepository();
-
         $user->setName($request->get('name', $user->getName()));
         $user->setDeviceId($request->get('deviceId', $user->getDeviceId()));
 
@@ -216,5 +191,22 @@ class UserController extends Controller
 
         return $response;
 
+    }
+
+    /**
+     * @param \Scavenger\WebserviceBundle\Entity\User $user | null
+     * @return array
+     */
+    private function getUserAsArray($user)
+    {
+        if (!$user) {
+            return array();
+        }
+
+        return array(
+            'id' => $user->getId(),
+            'name' => $user->getDeviceId(),
+            'deviceId' => $user->getDeviceId()
+        );
     }
 }
