@@ -74,6 +74,33 @@ class SessionController extends Controller
     }
 
     /**
+     * @Route("/{sessionId}/user/{userId}/")
+     * @Method({"DELETE"})
+     */
+    public function removeUserAction($sessionId, $userId)
+    {
+        $userRepository = $this->container->get('sh.repository.user');
+        $sessionRepository = $this->getSessionRepository();
+
+        $user = $userRepository->findOneBy(array('id' => $userId));
+        $session = $sessionRepository->findOneBy(array('id' => $sessionId));
+
+        $sessions = $user->getSessions();
+
+        if ($sessions->contains($session)) {
+            $sessions->removeElement($session);
+            $user->setSessions($sessions);
+
+            $em = $this->getEntityManager();
+            $em->persist($user);
+            $em->flush();
+        }
+
+
+        return new Response('', 200);
+    }
+
+    /**
      * @return \Scavenger\WebserviceBundle\Entity\SessionRepository
      */
     private function getSessionRepository()
