@@ -8,6 +8,8 @@ use \Doctrine\ORM\Mapping\ManyToMany;
 use \Doctrine\ORM\Mapping\JoinTable;
 use \Doctrine\ORM\Mapping\JoinColumn;
 
+use \Scavenger\WebserviceBundle\Entity\UserLocation;
+
 /**
  * Scavenger\WebserviceBundle\Entity\User
  *
@@ -40,13 +42,13 @@ class User
     private $device_id;
 
     /**
-     * @OneToMany(targetEntity="Scavenger\WebserviceBundle\Entity\UserLocation", mappedBy="user")
+     * @OneToMany(targetEntity="Scavenger\WebserviceBundle\Entity\UserLocation", mappedBy="user", cascade={"all"})
      * @JoinColumn(name="user_id", referencedColumnName="id")
      */
     private $locations;
 
     /**
-     * @ManyToMany(targetEntity="Scavenger\WebserviceBundle\Entity\Session", inversedBy="users")
+     * @ManyToMany(targetEntity="Scavenger\WebserviceBundle\Entity\Session", inversedBy="users", cascade={"all"})
      * @JoinTable(name="Session_has_User",
      *      joinColumns={@JoinColumn(name="session_id", referencedColumnName="id")},
      *      inverseJoinColumns={@JoinColumn(name="user_id", referencedColumnName="id")}
@@ -118,5 +120,15 @@ class User
     public function getSessions()
     {
         return $this->sessions;
+    }
+
+    public function setSessions($sessions)
+    {
+        $this->sessions = $sessions;
+    }
+
+    public function setLocations($location)
+    {
+        $this->locations = $location;
     }
 }

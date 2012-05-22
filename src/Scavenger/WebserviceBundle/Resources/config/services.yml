@@ -1,7 +1,26 @@
+parameters:
+  response.class: Symfony\Component\HttpFoundation\Response
+
 services:
+
+  sh.response:
+    class: %response.class%
+
   sh.repository.user:
-      class: ScavengerWebserviceBundle\Entity\UserRepository
-      factory_service: doctrine.orm.default_entity_manager
-      factory_method: getRepository
-      arguments:
-        - 'ScavengerWebserviceBundle:User'
+    class: ScavengerWebserviceBundle\Entity\UserRepository
+    factory_service: doctrine.orm.default_entity_manager
+    factory_method: getRepository
+    arguments:
+      - 'ScavengerWebserviceBundle:User'
+
+  sh.repository.session:
+    class: ScavengerWebserviceBundle\Entity\UserRepository
+    factory_service: doctrine.orm.default_entity_manager
+    factory_method: getRepository
+    arguments:
+      - 'ScavengerWebserviceBundle:Session'
+
+  sh.response.handler:
+    class: Scavenger\WebserviceBundle\Lib\Response\ResponseHandler
+    arguments:
+      - @sh.response

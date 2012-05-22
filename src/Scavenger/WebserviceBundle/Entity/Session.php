@@ -106,4 +106,9 @@ class Session
     {
         return $this->users;
     }
+
+    public function setUsers($users)
+    {
+        $this->users = $users;
+    }
 }

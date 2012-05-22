@@ -51,9 +51,9 @@ class UserController extends Controller
         $request = $this->getRequest();
         $user = $this->getUserRepository()->findOneById($id);
 
-        $this->saveUserData($user, $this->getRequest());
+        $user = $this->saveUserData($user, $this->getRequest());
 
-        $this->handleGetResponse(new Response(), $this->getUserAsArray($user));
+        return $this->handleGetResponse(new Response(), $this->getUserAsArray($user));
     }
 
     /**
@@ -103,6 +103,32 @@ class UserController extends Controller
     }
 
     /**
+     * @Route("/{id}/position/")
+     * @Method({"POST"})
+     */
+    public function userPositionUpdate($id)
+    {
+        $user = $this->getUserRepository()->findOneBy(array('id' => $id));
+        $locations = $user->getLocations();
+        $location = new \Scavenger\WebserviceBundle\Entity\UserLocation();
+
+        $location->setLat($this->getRequest()->get('lat'));
+        $location->setLng($this->getRequest()->get('lng'));
+        $location->setUser($user);
+
+        $locations->add($location);
+        $user->setLocations($locations);
+
+        $em = $this->getEntityManager();
+        $em->persist($user);
+        $em->flush();
+
+
+        return $this->handleGetResponse(new Response(), $this->getUserAsArray($user));
+    }
+
+
+    /**
      * @Route("/{id}/")
      * @Method({"GET"})
      */
@@ -150,10 +176,12 @@ class UserController extends Controller
         $user->setName($request->get('name', $user->getName()));
         $user->setDeviceId($request->get('deviceId', $user->getDeviceId()));
 
+
         $em = $this->getEntityManager();
         $em->persist($user);
         $em->flush();
 
+        return $user;
     }
 
 
@@ -190,7 +218,6 @@ class UserController extends Controller
         $response->headers->set('Content-Type', 'application/json');
 
         return $response;
-
     }
 
     /**
@@ -205,7 +232,7 @@ class UserController extends Controller
 
         return array(
             'id' => $user->getId(),
-            'name' => $user->getDeviceId(),
+            'name' => $user->getName(),
             'deviceId' => $user->getDeviceId()
         );
     }
