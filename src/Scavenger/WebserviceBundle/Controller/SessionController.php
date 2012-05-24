@@ -156,6 +156,7 @@ class SessionController extends Controller
             'id' => $session->getId(),
             'name' => $session->getName(),
             'mrX' => $session->getMrX(),
+            'status' => $session->getStatusCode()
         );
     }
 

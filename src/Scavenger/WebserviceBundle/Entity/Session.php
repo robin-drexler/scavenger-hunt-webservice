@@ -38,6 +38,13 @@ class Session
      */
     private $mrX;
 
+    /**
+     * @var integer $id
+     *
+     * @ORM\Column(name="status_code", type="integer", nullable=false)
+     */
+    private $statusCode = 0;
+
 
     /**
      * @ManyToMany(targetEntity="Scavenger\WebserviceBundle\Entity\User", mappedBy="sessions", cascade={"all"})
@@ -48,7 +55,7 @@ class Session
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -68,7 +75,7 @@ class Session
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -88,7 +95,7 @@ class Session
     /**
      * Get mrX
      *
-     * @return integer 
+     * @return integer
      */
     public function getMrX()
     {
@@ -106,5 +113,22 @@ class Session
     public function setUsers($users)
     {
         $this->users = $users;
+    }
+
+    /**
+     * @param $statusCode
+     * @return void
+     */
+    public function setStatusCode($statusCode)
+    {
+        $this->statusCode = $statusCode;
+    }
+
+    /**
+     * @return int
+     */
+    public function getStatusCode()
+    {
+        return $this->statusCode;
     }
 }
