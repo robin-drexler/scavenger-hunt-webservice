@@ -43,7 +43,7 @@ class Session
 
 
     /**
-     * @var integer $id
+     * @var integer $statusCode
      *
      * @ORM\Column(name="status_code", type="integer", nullable=false)
      */
