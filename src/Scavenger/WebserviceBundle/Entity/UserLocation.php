@@ -27,16 +27,16 @@ class UserLocation
     private $user;
 
     /**
-     * @var float $lat
+     * @var int $lat
      *
-     * @ORM\Column(name="lat", type="float")
+     * @ORM\Column(name="lat", type="integer")
      */
     private $lat;
 
     /**
      * @var float $lng
      *
-     * @ORM\Column(name="lng", type="float")
+     * @ORM\Column(name="lng", type="integer")
      */
     private $lng;
 
@@ -74,7 +74,7 @@ class UserLocation
     /**
      * Set lat
      *
-     * @param float $lat
+     * @param int $lat
      */
     public function setLat($lat)
     {
@@ -84,7 +84,7 @@ class UserLocation
     /**
      * Get lat
      *
-     * @return float
+     * @return int
      */
     public function getLat()
     {
