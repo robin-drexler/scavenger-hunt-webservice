@@ -15,6 +15,9 @@ use \Doctrine\ORM\Mapping\JoinColumn;
  */
 class Session
 {
+
+    const SESSION_ACTIVE = 0; //lol
+
     /**
      * @var integer $id
      *
@@ -43,7 +46,7 @@ class Session
      *
      * @ORM\Column(name="status_code", type="integer", nullable=false)
      */
-    private $statusCode = 0;
+    private $statusCode = self::SESSION_ACTIVE;
 
 
     /**
