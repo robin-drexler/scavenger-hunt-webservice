@@ -41,6 +41,7 @@ class Session
      */
     private $mrX;
 
+
     /**
      * @var integer $id
      *

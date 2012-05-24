@@ -24,8 +24,24 @@ class SessionController extends Controller
     public function createAction()
     {
         $session = $this->saveSessionData(new Session(), $this->getRequest());
+        $userRepository = $this->container->get('sh.repository.user');
+
+        $user = $userRepository->findOneBy(array('id' => $session->getMrX()));
+
+        if (!$user) {
+            throw new HttpException(400, 'User (mrX) does not exist');
+        }
+
+        $sessions = $user->getSessions();
+
+        $sessions->add($session);
+        $user->setSessions($sessions);
+        $em = $this->getEntityManager();
+        $em->persist($user);
+        $em->flush();
 
         return $this->getResponseHandler()->handleResponse($this->getSessionAsArray($session));
+
     }
 
     /**
