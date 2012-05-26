@@ -42,6 +42,14 @@ class Session
     private $mrX;
 
 
+     /**
+     * @var integer $causer
+     *
+     * @ORM\Column(name="causer", type="integer")
+     */
+    private $causer = 0;
+
+
     /**
      * @var integer $statusCode
      *
@@ -134,5 +142,21 @@ class Session
     public function getStatusCode()
     {
         return $this->statusCode;
+    }
+
+    /**
+     * @param int $causer
+     */
+    public function setCauser($causer)
+    {
+        $this->causer = $causer;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCauser()
+    {
+        return $this->causer;
     }
 }

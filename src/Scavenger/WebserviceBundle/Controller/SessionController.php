@@ -130,6 +130,34 @@ class SessionController extends Controller
     }
 
     /**
+     * @Route("/{id}/")
+     * @Method({"GET"})
+     */
+    public function getSessionAction($id)
+    {
+        $repository = $this->getSessionRepository();
+        $session = $repository->findOneBy(array('id' => $id));
+        $responseHandler = $this->getResponseHandler();
+
+        return $responseHandler->handleResponse($this->getSessionAsArray($session));
+    }
+
+    /**
+     * @Route("/{id}/")
+     * @Method({"POST"})
+     */
+    public function editSessionAction($id)
+    {
+        $repository = $this->getSessionRepository();
+        $session = $repository->findOneBy(array('id' => $id));
+
+        $session = $this->saveSessionData($session, $this->getRequest());
+        $responseHandler = $this->getResponseHandler();
+
+        return $responseHandler->handleResponse($this->getSessionAsArray($session));
+    }
+
+    /**
      * @return \Scavenger\WebserviceBundle\Entity\SessionRepository
      */
     private function getSessionRepository()
@@ -149,7 +177,8 @@ class SessionController extends Controller
     {
         $session->setName($request->get('name', $session->getName()));
         $session->setMrX($request->get('mrX', $session->getMrX()));
-
+        $session->setStatusCode($request->get('status', $session->getStatusCode()));
+        $session->setCauser($request->get('causer', $session->getCauser()));
 
         $em = $this->getEntityManager();
         $em->persist($session);
@@ -172,7 +201,8 @@ class SessionController extends Controller
             'id' => $session->getId(),
             'name' => $session->getName(),
             'mrX' => $session->getMrX(),
-            'status' => $session->getStatusCode()
+            'status' => $session->getStatusCode(),
+            'causer' => $session->getCauser()
         );
     }
 
