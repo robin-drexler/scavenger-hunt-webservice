@@ -62,6 +62,18 @@ class Session
      * @ManyToMany(targetEntity="Scavenger\WebserviceBundle\Entity\User", mappedBy="sessions", cascade={"all"})
      */
     private $users;
+    
+    /**
+     * @var \DateTime
+     * @ORM\Column(name="start", type="datetime", nullable=true) 
+     */
+    private $start;
+    
+    /**
+     * @var \DateTime
+     * @ORM\Column(name="end", type="datetime", nullable=true)
+     */
+    private $end;
 
 
     /**
