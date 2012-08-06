@@ -64,16 +64,16 @@ class Session
     private $users;
     
     /**
-     * @var \DateTime
-     * @ORM\Column(name="start", type="datetime", nullable=true) 
+     * @var integer
+     * @ORM\Column(name="start", type="integer") 
      */
-    private $start;
+    private $start = 0;
     
     /**
-     * @var \DateTime
-     * @ORM\Column(name="end", type="datetime", nullable=true)
+     * @var integer
+     * @ORM\Column(name="end", type="integer")
      */
-    private $end;
+    private $end = 0;
 
 
     /**
@@ -171,4 +171,42 @@ class Session
     {
         return $this->causer;
     }
+    
+    /**
+     *
+     * @return \DateTime 
+     */
+    public function getStart()
+    {
+        return $this->start;
+    }
+    
+    /**
+     *
+     * @return \DateTime 
+     */
+    public function getEnd()
+    {
+        return $this->end;
+    }
+    
+    
+    /**
+     *
+     * @param int $dateTimeStamp 
+     */
+    public function setStart($dateTimeStamp) 
+    {
+        $this->start = $dateTimeStamp;
+    }
+    
+    /**
+     *
+     * @param int $dateTimeStamp 
+     */
+    public function setEnd($dateTimeStamp) 
+    {
+        $this->end = $dateTimeStamp;
+    }
+    
 }

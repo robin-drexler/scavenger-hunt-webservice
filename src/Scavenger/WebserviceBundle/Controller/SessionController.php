@@ -23,7 +23,11 @@ class SessionController extends Controller
      */
     public function createAction()
     {
-        $session = $this->saveSessionData(new Session(), $this->getRequest());
+        $session = $this->prepareSessionData(new Session(), $this->getRequest());
+        
+        //set the start time, cause obviously this is the start of the session
+        $session->setStart(time());
+        
         $userRepository = $this->container->get('sh.repository.user');
 
         $user = $userRepository->findOneBy(array('id' => $session->getMrX()));
@@ -31,12 +35,17 @@ class SessionController extends Controller
         if (!$user) {
             throw new HttpException(400, 'User (mrX) does not exist');
         }
+        
+        //If no problens occured, save the bunch of data
+        $em = $this->getEntityManager();
+        $em->persist($session);
+        $em->flush();
 
         $sessions = $user->getSessions();
 
+        //Add session to current user session
         $sessions->add($session);
         $user->setSessions($sessions);
-        $em = $this->getEntityManager();
         $em->persist($user);
         $em->flush();
 
@@ -151,7 +160,12 @@ class SessionController extends Controller
         $repository = $this->getSessionRepository();
         $session = $repository->findOneBy(array('id' => $id));
 
-        $session = $this->saveSessionData($session, $this->getRequest());
+        $session = $this->prepareSessionData($session, $this->getRequest());
+        
+        $em = $this->getEntityManager();
+        $em->persist($session);
+        $em->flush();
+        
         $responseHandler = $this->getResponseHandler();
 
         return $responseHandler->handleResponse($this->getSessionAsArray($session));
@@ -173,16 +187,12 @@ class SessionController extends Controller
         return $this->container->get('sh.response.handler');
     }
 
-    private function saveSessionData(Session $session, $request)
+    private function prepareSessionData(Session $session, $request)
     {
         $session->setName($request->get('name', $session->getName()));
         $session->setMrX($request->get('mrX', $session->getMrX()));
         $session->setStatusCode($request->get('status', $session->getStatusCode()));
         $session->setCauser($request->get('causer', $session->getCauser()));
-
-        $em = $this->getEntityManager();
-        $em->persist($session);
-        $em->flush();
 
         return $session;
     }
@@ -202,7 +212,8 @@ class SessionController extends Controller
             'name' => $session->getName(),
             'mrX' => $session->getMrX(),
             'status' => $session->getStatusCode(),
-            'causer' => $session->getCauser()
+            'causer' => $session->getCauser(),
+            'start' => $session->getStart(),
         );
     }
 
