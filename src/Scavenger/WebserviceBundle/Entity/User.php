@@ -51,6 +51,13 @@ class User
      * @ManyToMany(targetEntity="Scavenger\WebserviceBundle\Entity\Session", inversedBy="users", cascade={"all"})
      */
     private $sessions;
+    
+    /**
+     * @var string $image
+     *
+     * @ORM\Column(name="image", type="text", nullable="true")
+     */
+    private $image;
 
     /**
      * Get id
@@ -127,4 +134,15 @@ class User
     {
         $this->locations = $location;
     }
+    
+    public function getImage()
+    {
+        return $this->image;
+    }
+    
+    public function setImage($image)
+    {
+        $this->image = $image;
+    }
+    
 }
