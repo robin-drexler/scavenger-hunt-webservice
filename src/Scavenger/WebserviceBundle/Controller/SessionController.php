@@ -225,12 +225,16 @@ class SessionController extends Controller
 
         $battlezone = $session->getBattlezone();
 
-        $battlezoneAr = array(
-            'name' => $battlezone->getName(),
-            'lat'  => $battlezone->getLat(),
-            'lng' => $battlezone->getLng(),
-            'radius' => $battlezone->getRadius()
-        );
+        $battlezoneAr = array();
+
+        if ($battlezone) {
+            $battlezoneAr = array(
+                'name' => $battlezone->getName(),
+                'lat'  => $battlezone->getLat(),
+                'lng' => $battlezone->getLng(),
+                'radius' => $battlezone->getRadius()
+            );
+        }
 
         return array(
             'id' => $session->getId(),
