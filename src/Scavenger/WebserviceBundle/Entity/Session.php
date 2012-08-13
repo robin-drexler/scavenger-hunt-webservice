@@ -119,6 +119,9 @@ class Session
         $this->battlezone = $battlezone;
     }
 
+    /**
+     * @return Battlezone
+     */
     public function getBattlezone() {
         return $this->battlezone;
     }

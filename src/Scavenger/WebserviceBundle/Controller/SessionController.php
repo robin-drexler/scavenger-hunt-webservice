@@ -7,10 +7,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use \Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use \Symfony\Component\HttpFoundation\Response;
-use \Scavenger\WebserviceBundle\Entity\User;
 use \Symfony\Component\HttpFoundation\Request;
 use \Symfony\Component\HttpKernel\Exception\HttpException;
 use \Scavenger\WebserviceBundle\Entity\Session;
+use \Scavenger\WebserviceBundle\Entity\User;
 use \Scavenger\WebserviceBundle\Entity\Battlezone;
 
 /**
@@ -223,6 +223,15 @@ class SessionController extends Controller
             return array();
         }
 
+        $battlezone = $session->getBattlezone();
+
+        $battlezoneAr = array(
+            'name' => $battlezone->getName(),
+            'lat'  => $battlezone->getLat(),
+            'lng' => $battlezone->getLng(),
+            'radius' => $battlezone->getRadius()
+        );
+
         return array(
             'id' => $session->getId(),
             'name' => $session->getName(),
@@ -230,6 +239,7 @@ class SessionController extends Controller
             'status' => $session->getStatusCode(),
             'causer' => $session->getCauser(),
             'start' => $session->getStart(),
+            'battlezone' => $battlezoneAr
         );
     }
 
