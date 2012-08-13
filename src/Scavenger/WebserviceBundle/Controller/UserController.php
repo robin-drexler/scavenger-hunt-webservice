@@ -170,8 +170,7 @@ class UserController extends Controller
         
         foreach ($qb->getQuery()->getArrayResult() as $user)
         {
-          $u = $user;
-          $u['image'] = $this->generateUrl('image.user', array('id' => $user['id']), true);
+          $u[] = array_merge($user, array('image' => $this->generateUrl('image.user', array('id' => $user['id']), true)));
         }
 
         return $this->handleGetResponse(new Response(), $u);
@@ -188,7 +187,7 @@ class UserController extends Controller
         $user = $repository->findOneById($id);
         
         $this->assertUserExists($user);
-        $user->getImage(); 
+        $image = $user->getImage(); 
         
         return $this->handleGetResponse(new Response(), array($image));
     }
