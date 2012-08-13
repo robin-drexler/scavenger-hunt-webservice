@@ -11,6 +11,7 @@ use \Scavenger\WebserviceBundle\Entity\User;
 use \Symfony\Component\HttpFoundation\Request;
 use \Symfony\Component\HttpKernel\Exception\HttpException;
 use \Scavenger\WebserviceBundle\Entity\Session;
+use \Scavenger\WebserviceBundle\Entity\Battlezone;
 
 /**
  * @Route("/session")
@@ -24,13 +25,18 @@ class SessionController extends Controller
     public function createAction()
     {
         $session = $this->prepareSessionData(new Session(), $this->getRequest());
-        
+        $battlezone = $this->prepareBattlezoneData(new Battlezone(), $this->getRequest());
+        $session->setBattlezone($battlezone);
+
         //set the start time, cause obviously this is the start of the session
         $session->setStart(time());
         
         $userRepository = $this->container->get('sh.repository.user');
 
         $user = $userRepository->findOneBy(array('id' => $session->getMrX()));
+
+
+
 
         if (!$user) {
             throw new HttpException(400, 'User (mrX) does not exist');
@@ -197,6 +203,16 @@ class SessionController extends Controller
         return $session;
     }
 
+    private function prepareBattlezoneData(Battlezone $battlezone, Request $request)
+    {
+        $battlezone->setName(   $request->get('battlezone_name'),   $battlezone->getName());
+        $battlezone->setLat(    $request->get('battlezone_lat'),    $battlezone->getLat());
+        $battlezone->setLng(    $request->get('battlezone_lng'),    $battlezone->getLng());
+        $battlezone->setRadius( $request->get('battlezone_radius'), $battlezone->getRadius());
+
+        return $battlezone;
+    }
+
     /**
      * @param \Scavenger\WebserviceBundle\Entity\Session $session | null
      * @return array
@@ -234,6 +250,4 @@ class SessionController extends Controller
     {
         return $this->get("doctrine.orm.entity_manager");
     }
-
-
 }
