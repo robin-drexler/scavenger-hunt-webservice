@@ -2,7 +2,10 @@
 
 namespace Scavenger\WebserviceBundle\Entity;
 
+use Scavenger\WebserviceBundle\Entity\Battlezone;
+
 use Doctrine\ORM\Mapping as ORM;
+use \Doctrine\ORM\Mapping\OneToOne;
 use \Doctrine\ORM\Mapping\ManyToMany;
 use \Doctrine\ORM\Mapping\JoinTable;
 use \Doctrine\ORM\Mapping\JoinColumn;
@@ -62,7 +65,13 @@ class Session
      * @ManyToMany(targetEntity="Scavenger\WebserviceBundle\Entity\User", mappedBy="sessions", cascade={"all"})
      */
     private $users;
-    
+
+    /**
+     * @OneToOne(targetEntity="Scavenger\WebserviceBundle\Entity\Battlezone", cascade={"all"})
+     * @JoinColumn(name="battlezone_id", referencedColumnName="id")
+     */
+    private $battlezone;
+
     /**
      * @var integer
      * @ORM\Column(name="start", type="integer") 
@@ -104,6 +113,17 @@ class Session
     public function getName()
     {
         return $this->name;
+    }
+
+    public function setBattlezone($battlezone) {
+        $this->battlezone = $battlezone;
+    }
+
+    /**
+     * @return Battlezone
+     */
+    public function getBattlezone() {
+        return $this->battlezone;
     }
 
     /**
