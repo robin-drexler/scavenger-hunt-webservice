@@ -67,7 +67,8 @@ class Session
     private $users;
 
     /**
-     * @OneToOne(targetEntity="Scavenger\WebserviceBundle\Entity\Battlezone", mappedBy="sessions", cascade={"all"}))
+     * @OneToOne(targetEntity="Scavenger\WebserviceBundle\Entity\Battlezone", cascade={"all"})
+     * @JoinColumn(name="battlezone_id", referencedColumnName="id")
      */
     private $battlezone;
 
