@@ -62,7 +62,7 @@ class Session
 
 
     /**
-     * @ManyToMany(targetEntity="Scavenger\WebserviceBundle\Entity\User", mappedBy="sessions", cascade={"all"})
+     * @ManyToMany(targetEntity="Scavenger\WebserviceBundle\Entity\User", mappedBy="sessions")
      */
     private $users;
 
