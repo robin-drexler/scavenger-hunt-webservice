@@ -42,7 +42,7 @@ class SessionController extends Controller
             throw new HttpException(400, 'User (mrX) does not exist');
         }
         
-        //If no problens occured, save the bunch of data
+        //If no problems occured, save the bunch of data
         $em = $this->getEntityManager();
         $em->persist($session);
         $em->flush();
@@ -205,10 +205,10 @@ class SessionController extends Controller
 
     private function prepareBattlezoneData(Battlezone $battlezone, Request $request)
     {
-        $battlezone->setName(   $request->get('battlezone_name'),   $battlezone->getName());
-        $battlezone->setLat(    $request->get('battlezone_lat'),    $battlezone->getLat());
-        $battlezone->setLng(    $request->get('battlezone_lng'),    $battlezone->getLng());
-        $battlezone->setRadius( $request->get('battlezone_radius'), $battlezone->getRadius());
+        $battlezone->setName($request->get('battlezone_name'), $battlezone->getName());
+        $battlezone->setLat($request->get('battlezone_lat'), $battlezone->getLat());
+        $battlezone->setLng($request->get('battlezone_lng'), $battlezone->getLng());
+        $battlezone->setRadius($request->get('battlezone_radius'), $battlezone->getRadius());
 
         return $battlezone;
     }
