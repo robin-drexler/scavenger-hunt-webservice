@@ -1,0 +1,17 @@
+# Copy this file to
+# app/config/parameters.ini
+# and then edit according to your needs
+
+[parameters]
+    database_driver="pdo_mysql"
+    database_host="localhost"
+    database_port=""
+    database_name="scavenger"
+    database_user="YOUR USERNAME"
+    database_password="YOUR PASSWORD"
+    mailer_transport="smtp"
+    mailer_host="localhost"
+    mailer_user=""
+    mailer_password=""
+    locale="en"
+    secret="YOUR SECRET"
