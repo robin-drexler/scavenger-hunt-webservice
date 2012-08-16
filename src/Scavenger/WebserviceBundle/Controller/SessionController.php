@@ -33,7 +33,7 @@ class SessionController extends Controller
         
         $userRepository = $this->container->get('sh.repository.user');
 
-        $user = $userRepository->findOneBy(array('id' => $session->getMrX()));
+        $user = $userRepository->find($session->getMrX());
 
 
 
@@ -66,7 +66,7 @@ class SessionController extends Controller
     public function deleteAction($id)
     {
         $repository = $this->getSessionRepository();
-        $session = $repository->findOneBy(array('id' => $id));
+        $session = $repository->find($id);
 
         $responseHandler = $this->getResponseHandler();
         $responseHandler->throwNotFound($session);
@@ -88,8 +88,8 @@ class SessionController extends Controller
         $userRepository = $this->container->get('sh.repository.user');
         $sessionRepository = $this->getSessionRepository();
 
-        $user = $userRepository->findOneBy(array('id' => $userId));
-        $session = $sessionRepository->findOneBy(array('id' => $sessionId));
+        $user = $userRepository->find($userId);
+        $session = $sessionRepository->find($sessionId);
 
         $sessions = $user->getSessions();
 
@@ -113,8 +113,8 @@ class SessionController extends Controller
         $userRepository = $this->container->get('sh.repository.user');
         $sessionRepository = $this->getSessionRepository();
 
-        $user = $userRepository->findOneBy(array('id' => $userId));
-        $session = $sessionRepository->findOneBy(array('id' => $sessionId));
+        $user = $userRepository->find($userId);
+        $session = $sessionRepository->find($sessionId);
 
         $sessions = $user->getSessions();
 
@@ -151,7 +151,7 @@ class SessionController extends Controller
     public function getSessionAction($id)
     {
         $repository = $this->getSessionRepository();
-        $session = $repository->findOneBy(array('id' => $id));
+        $session = $repository->find($id);
         $responseHandler = $this->getResponseHandler();
 
         return $responseHandler->handleResponse($this->getSessionAsArray($session));
@@ -164,7 +164,7 @@ class SessionController extends Controller
     public function editSessionAction($id)
     {
         $repository = $this->getSessionRepository();
-        $session = $repository->findOneBy(array('id' => $id));
+        $session = $repository->find($id);
 
         $session = $this->prepareSessionData($session, $this->getRequest());
         
