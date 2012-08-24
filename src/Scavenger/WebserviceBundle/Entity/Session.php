@@ -74,10 +74,10 @@ class Session
 
     /**
      * @var integer
-     * @ORM\Column(name="start", type="integer") 
+     * @ORM\Column(name="start", type="integer")
      */
     private $start = 0;
-    
+
     /**
      * @var integer
      * @ORM\Column(name="end", type="integer")
@@ -191,42 +191,42 @@ class Session
     {
         return $this->causer;
     }
-    
+
     /**
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getStart()
     {
         return $this->start;
     }
-    
+
     /**
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getEnd()
     {
         return $this->end;
     }
-    
-    
+
+
     /**
      *
-     * @param int $dateTimeStamp 
+     * @param int $dateTimeStamp
      */
-    public function setStart($dateTimeStamp) 
+    public function setStart($dateTimeStamp)
     {
         $this->start = $dateTimeStamp;
     }
-    
+
     /**
      *
-     * @param int $dateTimeStamp 
+     * @param int $dateTimeStamp
      */
-    public function setEnd($dateTimeStamp) 
+    public function setEnd($dateTimeStamp)
     {
         $this->end = $dateTimeStamp;
     }
-    
+
 }

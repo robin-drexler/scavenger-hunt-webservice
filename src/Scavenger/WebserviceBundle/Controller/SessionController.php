@@ -33,7 +33,7 @@ class SessionController extends Controller
         
         $userRepository = $this->container->get('sh.repository.user');
 
-        $user = $userRepository->findOneBy(array('id' => $session->getMrX()));
+        $user = $userRepository->find($session->getMrX());
 
 
 
@@ -42,7 +42,7 @@ class SessionController extends Controller
             throw new HttpException(400, 'User (mrX) does not exist');
         }
         
-        //If no problens occured, save the bunch of data
+        //If no problems occured, save the bunch of data
         $em = $this->getEntityManager();
         $em->persist($session);
         $em->flush();
@@ -66,7 +66,7 @@ class SessionController extends Controller
     public function deleteAction($id)
     {
         $repository = $this->getSessionRepository();
-        $session = $repository->findOneBy(array('id' => $id));
+        $session = $repository->find($id);
 
         $responseHandler = $this->getResponseHandler();
         $responseHandler->throwNotFound($session);
@@ -88,8 +88,8 @@ class SessionController extends Controller
         $userRepository = $this->container->get('sh.repository.user');
         $sessionRepository = $this->getSessionRepository();
 
-        $user = $userRepository->findOneBy(array('id' => $userId));
-        $session = $sessionRepository->findOneBy(array('id' => $sessionId));
+        $user = $userRepository->find($userId);
+        $session = $sessionRepository->find($sessionId);
 
         $sessions = $user->getSessions();
 
@@ -113,8 +113,8 @@ class SessionController extends Controller
         $userRepository = $this->container->get('sh.repository.user');
         $sessionRepository = $this->getSessionRepository();
 
-        $user = $userRepository->findOneBy(array('id' => $userId));
-        $session = $sessionRepository->findOneBy(array('id' => $sessionId));
+        $user = $userRepository->find($userId);
+        $session = $sessionRepository->find($sessionId);
 
         $sessions = $user->getSessions();
 
@@ -151,7 +151,7 @@ class SessionController extends Controller
     public function getSessionAction($id)
     {
         $repository = $this->getSessionRepository();
-        $session = $repository->findOneBy(array('id' => $id));
+        $session = $repository->find($id);
         $responseHandler = $this->getResponseHandler();
 
         return $responseHandler->handleResponse($this->getSessionAsArray($session));
@@ -164,7 +164,7 @@ class SessionController extends Controller
     public function editSessionAction($id)
     {
         $repository = $this->getSessionRepository();
-        $session = $repository->findOneBy(array('id' => $id));
+        $session = $repository->find($id);
 
         $session = $this->prepareSessionData($session, $this->getRequest());
         
@@ -205,10 +205,10 @@ class SessionController extends Controller
 
     private function prepareBattlezoneData(Battlezone $battlezone, Request $request)
     {
-        $battlezone->setName(   $request->get('battlezone_name'),   $battlezone->getName());
-        $battlezone->setLat(    $request->get('battlezone_lat'),    $battlezone->getLat());
-        $battlezone->setLng(    $request->get('battlezone_lng'),    $battlezone->getLng());
-        $battlezone->setRadius( $request->get('battlezone_radius'), $battlezone->getRadius());
+        $battlezone->setName($request->get('battlezone_name'), $battlezone->getName());
+        $battlezone->setLat($request->get('battlezone_lat'), $battlezone->getLat());
+        $battlezone->setLng($request->get('battlezone_lng'), $battlezone->getLng());
+        $battlezone->setRadius($request->get('battlezone_radius'), $battlezone->getRadius());
 
         return $battlezone;
     }
