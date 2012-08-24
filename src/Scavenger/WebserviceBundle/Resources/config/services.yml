@@ -14,7 +14,7 @@ services:
       - 'ScavengerWebserviceBundle:User'
 
   sh.repository.session:
-    class: ScavengerWebserviceBundle\Entity\UserRepository
+    class: ScavengerWebserviceBundle\Entity\SessionRepository
     factory_service: doctrine.orm.default_entity_manager
     factory_method: getRepository
     arguments:
